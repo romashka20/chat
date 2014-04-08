@@ -1,0 +1,7 @@
+.idea/
+chat.iml
+README.md
+server/target
+server/server.iml
+client/target
+client/client.iml
