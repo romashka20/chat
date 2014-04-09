@@ -26,7 +26,7 @@ public class OutputThread implements Runnable {
             BufferedReader bk = new BufferedReader(new InputStreamReader(System.in));
 
             System.out.println("Your username:");
-
+            m = new Msg();
             m.setUsername(bk.readLine());
 
             while (exit) {
@@ -48,6 +48,7 @@ public class OutputThread implements Runnable {
 
         } catch (NullPointerException e) {
             System.out.println("Connection with server has been interrupted");
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

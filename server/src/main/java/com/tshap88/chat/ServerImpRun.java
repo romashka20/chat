@@ -26,13 +26,12 @@ public class ServerImpRun implements Runnable {
         try {
 
             ois = new ObjectInputStream(socket.getInputStream());
-            serverConnections.putServerConnection(m.getUsername(), socket);
-
-            System.out.println("User connect: " + m.getUsername() + " " + socket.getInetAddress().getHostName());
 
             while (!false) {
 
                 this.m = (Msg) ois.readObject();
+                System.out.println("User connect: " + m.getUsername() + " " + socket.getInetAddress().getHostName());
+                serverConnections.putServerConnection(m.getUsername(), socket);
 
                 if (m.getMsg().equals("exit")) {
                     serverConnections.removeServerConnection(socket);
@@ -71,6 +70,8 @@ public class ServerImpRun implements Runnable {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Throwable th) {
+            th.printStackTrace();
         }
     }
 }

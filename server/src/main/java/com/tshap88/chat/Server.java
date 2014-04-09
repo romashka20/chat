@@ -22,7 +22,7 @@ public class Server {
 
                 final ExecutorService executorService = Executors.newFixedThreadPool(1);
                 executorService.submit(new ServerImpRun(sc));
-                executorService.shutdown();
+                //executorService.shutdown();
             }
 
         } catch (IOException e) {
