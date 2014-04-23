@@ -1,15 +1,16 @@
 package com.tshap88.chat;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 
-public class Msg implements Serializable {
+public class Message implements Serializable {
 
     private String username;
     private String msg;
+    private InetAddress clientIp;
 
-    public Msg() {
-       // this.username = username;
-        //this.msg = msg;
+    public Message() {
+
     }
 
     public void setUsername(String username){
@@ -26,5 +27,13 @@ public class Msg implements Serializable {
 
     public String getMsg() {
         return msg;
+    }
+
+    public void setClientIp(InetAddress clientIp){
+        this.clientIp = clientIp;
+    }
+
+    public InetAddress getClientIp() {
+        return clientIp;
     }
 }
