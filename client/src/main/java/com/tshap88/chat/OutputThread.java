@@ -2,17 +2,16 @@ package com.tshap88.chat;
 
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
 public class OutputThread implements Runnable {
 
     private Socket socket = null;
-    //private PrintWriter out = null;
     private ObjectOutputStream oos = null;
-    private String msgOut = null;
-    private String username = "";
-    private Msg m;
+    private Message m;
+    private InetAddress ip = null;
 
     public OutputThread(Socket socket) {
         this.socket = socket;
@@ -26,8 +25,11 @@ public class OutputThread implements Runnable {
             BufferedReader bk = new BufferedReader(new InputStreamReader(System.in));
 
             System.out.println("Your username:");
-            m = new Msg();
+            m = new Message();
             m.setUsername(bk.readLine());
+
+            ip = InetAddress.getLocalHost();
+            m.setClientIp(ip);
 
             while (exit) {
                 m.setMsg(bk.readLine());
