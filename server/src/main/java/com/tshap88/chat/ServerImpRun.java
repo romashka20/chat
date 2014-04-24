@@ -1,6 +1,7 @@
 package com.tshap88.chat;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ public class ServerImpRun implements Runnable {
     private ServerConnections serverConnections = new ServerConnections();
     private Socket socket;
     private ObjectInputStream ois = null;
-    private Msg m;
+    private Message m;
+    private InetAddress client = null;
 
     public ServerImpRun(ServerConnections connection) {
         this.serverConnections = connection;
@@ -29,26 +31,17 @@ public class ServerImpRun implements Runnable {
 
             while (!false) {
 
-                this.m = (Msg) ois.readObject();
+                this.m = (Message) ois.readObject();
                 System.out.println("User connect: " + m.getUsername() + " " + socket.getInetAddress().getHostName());
+                System.out.println(m.getUsername() + ": " + m.getClientIp());
                 serverConnections.putServerConnection(m.getUsername(), socket);
 
                 if (m.getMsg().equals("exit")) {
                     serverConnections.removeServerConnection(socket);
                     System.out.println("User is logged out of the chat");
-                } /*else if (!name.trim().equals(username) && name.trim().length() > 1) {
 
-                    Set<Map.Entry<String, Socket>> set = serverConnections.getSetMap().entrySet();
-                    for (Map.Entry<String, Socket> me : set) {
-                        if (me.getKey().equals(name.trim())) {
-                            PrintWriter out = new PrintWriter(me.getValue().getOutputStream());
-                            out.print(str.substring(0, num2+2) + str.substring(num + 1));
-                            out.flush();
-                        }
-                    }
-
-                } */else {
-                    System.out.println(m.getUsername() + " " + m.getMsg());
+                } else {
+                    System.out.println(m.getUsername() + ": " + m.getMsg());
 
                     for (Socket socket1 : serverConnections.getListSocket()) {
                         if (!socket1.equals(socket)) {
@@ -60,16 +53,13 @@ public class ServerImpRun implements Runnable {
                 }
             }
 
-            // in.close();
-            // socket.close();
-
         } catch (NegativeArraySizeException e) {
             System.out.println("Connection with user has been interrupted");
             serverConnections.removeServerConnection(socket);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (Throwable th) {
             th.printStackTrace();
         }
