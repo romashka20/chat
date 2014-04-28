@@ -26,6 +26,11 @@ public class ServerConnections {
         return listSocket;
     }
 
+    public synchronized Integer getSizeListSocket() {
+        int size = listSocket.size();
+        return size;
+    }
+
     public synchronized void addServerConnection(Socket socket) {
         listSocket.add(socket);
     }
