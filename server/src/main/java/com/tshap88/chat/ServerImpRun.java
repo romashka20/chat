@@ -15,7 +15,8 @@ public class ServerImpRun implements Runnable {
     private Socket socket;
     private ObjectInputStream ois = null;
     private Message m;
-    private InetAddress client = null;
+
+
 
     public ServerImpRun(ServerConnections connection) {
         this.serverConnections = connection;
@@ -28,8 +29,9 @@ public class ServerImpRun implements Runnable {
         try {
 
             ois = new ObjectInputStream(socket.getInputStream());
+            //boolean exit = true;
 
-            while (!false) {
+            while (true) {
 
                 this.m = (Message) ois.readObject();
                 System.out.println("User connect: " + m.getUsername() + " " + socket.getInetAddress().getHostName());
@@ -51,11 +53,19 @@ public class ServerImpRun implements Runnable {
                         }
                     }
                 }
+                //System.out.println(serverConnections.getSizeListSocket());
+                //if (serverConnections.getSizeListSocket() == 0) {
+
+                    //exit = false;
+                //}
             }
 
         } catch (NegativeArraySizeException e) {
             System.out.println("Connection with user has been interrupted");
             serverConnections.removeServerConnection(socket);
+
+        } catch (EOFException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
